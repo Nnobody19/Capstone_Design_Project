@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemName: Broken_Watch
   ItemIcon: {fileID: 21300000, guid: d70714edf9ee69749a45f01e28e902ea, type: 3}
-  IsImportant: 0
+  IsImportant: 1

@@ -25,6 +25,7 @@ public class PlayerViewInteraction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.IsPlayerStop) return;
 
         // 메인 카메라 정중앙에서 앞쪽으로 raycast == 플레이어가 바라보는 방향으로 raycast
         Ray ray = new Ray(_mainCamera.transform.position, _mainCamera.transform.forward);
@@ -32,7 +33,17 @@ public class PlayerViewInteraction : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, InteractionDistance, InteractionLayerMask))
         {
-            if (hit.collider.tag == "Interaction")
+            ItemPickup itemPickup = hit.collider.GetComponent<ItemPickup>();
+
+            if (itemPickup != null)
+            {
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    if (InventoryManager.Instance.Add(itemPickup.item)) Destroy(hit.collider.gameObject);
+                }
+            }
+
+            else if (hit.collider.tag == "Interaction")
             {
                 if (Input.GetKeyDown(KeyCode.E)) StartCoroutine(TeleportPlayer());
             }

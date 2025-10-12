@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemName: Rusty_Key
   ItemIcon: {fileID: 21300000, guid: b236aae72e5176f4380a3f32c39a2fc9, type: 3}
-  IsImportant: 0
+  IsImportant: 1
