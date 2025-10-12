@@ -29,6 +29,13 @@ public class HeadBob : MonoBehaviour
     {
         if (!IsHeadBob) return;
 
+        if (GameManager.IsPlayerStop)
+        {
+            transform.localPosition = Vector3.Lerp(transform.localPosition, _startPos, Time.deltaTime * StopSpeed);
+            timer = 0f;
+            return;
+        }
+
         // 벡터의 길이를 구해 플레이어의 속도 계산
         float playerSpeed = new Vector3(_playerController.velocity.x, 0, _playerController.velocity.z).magnitude;
 

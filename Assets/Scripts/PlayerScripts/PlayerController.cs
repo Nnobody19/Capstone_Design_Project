@@ -7,6 +7,10 @@ public class PlayerController : MonoBehaviour
     private CharacterController _playerController;
 
     private Vector3 _playerVelocity;
+    private AudioSource _audioSource;
+
+    public float WalkRate = 0.3f;
+    public float RunRate = 0.1f;
 
     public float gravity = -10f;
     public float MoveSpeed = 5.0f;
@@ -16,12 +20,16 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         _playerController = GetComponent<CharacterController>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.IsPlayerStop) return;
+
         MovePlayer();
+        HandleFootSteps();
     }
 
     private void MovePlayer()
@@ -45,5 +53,18 @@ public class PlayerController : MonoBehaviour
         move.y = _playerVelocity.y;
 
         _playerController.Move(move * Time.deltaTime);
+    }
+
+    private void HandleFootSteps()
+    {
+        if (_playerController.isGrounded && _playerController.velocity.magnitude > 2f)
+        {
+            if (!_audioSource.isPlaying) _audioSource.Play();
+
+            bool isRun = _playerController.velocity.magnitude > (MoveSpeed + 0.1f);
+            _audioSource.pitch = isRun ? RunRate : WalkRate;
+        }
+
+        else _audioSource.Stop();
     }
 }

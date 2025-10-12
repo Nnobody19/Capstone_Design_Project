@@ -5,14 +5,25 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
+
     [SerializeField] private GameObject _menuUI;
+    [SerializeField] private GameObject _inventoryUI;
 
     private bool isPause = false;
 
+    public static bool IsPlayerStop = false;                // 플레이어 행동 제어
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
     }
 
     // Update is called once per frame
@@ -23,6 +34,11 @@ public class GameManager : MonoBehaviour
             if (isPause) CloseMenu();
 
             else OpenMenu();
+        }
+
+        if (!isPause && (Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.I))) 
+        {
+            ToggleInventory();
         }
     }
 
@@ -42,6 +58,25 @@ public class GameManager : MonoBehaviour
         isPause = false;
         Cursor.lockState = CursorLockMode.Locked;   // 게임 시작 시, 마우스 커서 숨기기
         Cursor.visible= false;
+    }
+
+    public void ToggleInventory()
+    {
+        bool isActive = !_inventoryUI.activeSelf;
+        _inventoryUI.SetActive(isActive);
+        IsPlayerStop = isActive;
+
+        if (isActive)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 
     public void Quit()

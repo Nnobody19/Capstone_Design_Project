@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
-
     public float MouseSensity = 500.0f;
     public Transform PlayerTransform;
 
@@ -20,6 +19,8 @@ public class CameraManager : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
+        if (GameManager.IsPlayerStop) return;   
+
         if (_delay > 0)
         {
             _delay -= Time.deltaTime;
