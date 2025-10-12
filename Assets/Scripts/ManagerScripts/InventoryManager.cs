@@ -7,6 +7,7 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager Instance;
 
     public List<Item> Items = new List<Item>();
+    public int InventorySize = 12;
 
     void Awake()
     {
@@ -21,6 +22,10 @@ public class InventoryManager : MonoBehaviour
 
     public bool Add(Item item)
     {
+        if (Items.Count >= InventorySize) {
+            return false;
+        }
+
         Items.Add(item);
         Debug.Log(item.ItemName + "¿ª(∏¶) »πµÊ«ﬂ¥Ÿ.");
         return true;

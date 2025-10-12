@@ -9,8 +9,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 _playerVelocity;
     private AudioSource _audioSource;
 
-    public float WalkRate = 0.3f;
-    public float RunRate = 0.1f;
+    public float WalkRate = 0.8f;
+    public float RunRate = 1.5f;
 
     public float gravity = -10f;
     public float MoveSpeed = 5.0f;
@@ -26,7 +26,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.IsPlayerStop) return;
+        if (GameManager.IsPlayerStop)
+        {
+            _audioSource.Stop();
+            return;
+        }
 
         MovePlayer();
         HandleFootSteps();
