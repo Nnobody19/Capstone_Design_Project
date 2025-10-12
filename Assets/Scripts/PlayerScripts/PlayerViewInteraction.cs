@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerViewInteraction : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class PlayerViewInteraction : MonoBehaviour
 
     public Transform PlayerTransform;
     public Transform SpawnTransform;
+
+    public Image FadeImage;
+    public float FadeDuration = 1f;
 
     // Start is called before the first frame update
     void Start()
@@ -30,15 +34,37 @@ public class PlayerViewInteraction : MonoBehaviour
         {
             if (hit.collider.tag == "Interaction")
             {
-                if (Input.GetKeyDown(KeyCode.E)) TeleportPlayer();
+                if (Input.GetKeyDown(KeyCode.E)) StartCoroutine(TeleportPlayer());
             }
         }
     }
 
-    void TeleportPlayer()
+    private IEnumerator TeleportPlayer()
     {
-        PlayerTransform.GetComponent<CharacterController>().enabled = false;        // 플레이어 이동 불가 오류 발생
-        PlayerTransform.position = SpawnTransform.position;                         // CharacterController 사용시 발생할 수 있는 오류로 판명
-        PlayerTransform.GetComponent<CharacterController>().enabled = true;         // 이동 시 잠시 해제하고 이동 후 즉시 활성화
+        GameManager.IsPlayerStop = true;        // 이동하는 동안 플레이어 정지
+
+        float timer = 0f;
+
+        while (timer < FadeDuration) {
+            FadeImage.color = new Color(0, 0, 0, timer / FadeDuration);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        FadeImage.color = new Color(0, 0, 0, 1);
+
+        CharacterController cc = PlayerTransform.GetComponent<CharacterController>();
+        cc.enabled = false;
+        PlayerTransform.position = SpawnTransform.position;
+        cc.enabled = true;
+
+        timer = 0f;
+        while (timer < FadeDuration) {
+            FadeImage.color = new Color(0, 0, 0, 1 - (timer / FadeDuration));
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        FadeImage.color = new Color(0, 0, 0, 0);
+
+        GameManager.IsPlayerStop = false;
     }
 }
