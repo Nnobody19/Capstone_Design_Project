@@ -15,3 +15,5 @@ MonoBehaviour:
   ItemName: Broken_Watch
   ItemIcon: {fileID: 21300000, guid: d70714edf9ee69749a45f01e28e902ea, type: 3}
   IsImportant: 1
+  itemType: 2
+  ItemExplain: "\uB9DD\uAC00\uC838\uBC84\uB9B0 \uC190\uBAA9\uC2DC\uACC4"

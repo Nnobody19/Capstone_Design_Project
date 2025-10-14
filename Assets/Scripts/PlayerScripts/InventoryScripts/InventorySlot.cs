@@ -6,14 +6,19 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventorySlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
+public class InventorySlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
     private static GameObject _draggingIcon;
     private static Item _draggedItem;
+    private ToolTipManager _toolTipManager;
 
     private Item _item;
-
     public Image Icon;
+
+    public void Initialize(ToolTipManager tooltipManager)
+    {
+        _toolTipManager = tooltipManager;
+    }
 
     public void SetItem(Item newItem)
     {
@@ -76,5 +81,15 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IBeginDragHand
 
             eventData.pointerDrag.GetComponent<InventorySlot>().SetItem(tempItem);
         }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (_item != null && _toolTipManager != null) _toolTipManager.ShowToolTip(_item);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (_item != null && _toolTipManager != null) _toolTipManager.HideToolTip();
     }
 }
