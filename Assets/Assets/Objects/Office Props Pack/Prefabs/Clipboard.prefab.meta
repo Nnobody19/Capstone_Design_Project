@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5e843d8e24b800a4297a42f4c2171cea
+timeCreated: 1473236761
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 44111
+  packageName: Office Props Pack
+  packageVersion: 1.4
+  assetPath: Assets/Office Props Pack/Prefabs/Clipboard.prefab
+  uploadId: 616859

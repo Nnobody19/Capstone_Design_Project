@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: f24cb8f112890d6489cc6e712c22bc77
+timeCreated: 1513335279
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 44111
+  packageName: Office Props Pack
+  packageVersion: 1.4
+  assetPath: Assets/Office Props Pack/Models/Materials/wood3.mat
+  uploadId: 616859
