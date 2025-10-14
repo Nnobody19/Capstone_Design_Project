@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: d3ba46206fbbfe749ac44f4382441168
+timeCreated: 1513329788
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 44111
+  packageName: Office Props Pack
+  packageVersion: 1.4
+  assetPath: Assets/Office Props Pack/Models/Materials/light lamp.mat
+  uploadId: 616859
