@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject _menuUI;
     [SerializeField] private GameObject _inventoryUI;
+    [SerializeField] private ToolTipManager _toolTipManager;
 
     private bool isPause = false;
 
@@ -31,9 +32,14 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (isPause) CloseMenu();
+            if (_inventoryUI.activeSelf) ToggleInventory();
 
-            else OpenMenu();
+            else
+            {
+                if (isPause) CloseMenu();
+
+                else OpenMenu();
+            }
         }
 
         if (!isPause && (Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.I))) 
@@ -74,6 +80,8 @@ public class GameManager : MonoBehaviour
 
         else
         {
+            if (_toolTipManager != null) _toolTipManager.HideToolTip();
+
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }

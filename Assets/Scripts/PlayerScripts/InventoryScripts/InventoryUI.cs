@@ -11,6 +11,7 @@ public class InventoryUI : MonoBehaviour
     public GameObject ItemsParent;
     public GameObject ImportantItemsParent;
     public GameObject InventorySlotPrefab;
+    public ToolTipManager ToolManager;
 
     // Start is called before the first frame update
     void Awake ()
@@ -30,7 +31,10 @@ public class InventoryUI : MonoBehaviour
         for (int i = 0; i < count; i++) 
         {
             GameObject slotG0 = Instantiate(InventorySlotPrefab, parent);
-            slotList.Add(slotG0.GetComponent<InventorySlot>());
+            InventorySlot slot = slotG0.GetComponent<InventorySlot>();
+            slot.Initialize(ToolManager);
+
+            slotList.Add(slot);
         }
     }
 

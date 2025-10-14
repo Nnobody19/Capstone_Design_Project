@@ -15,3 +15,5 @@ MonoBehaviour:
   ItemName: Rusty_Key
   ItemIcon: {fileID: 21300000, guid: b236aae72e5176f4380a3f32c39a2fc9, type: 3}
   IsImportant: 1
+  itemType: 2
+  ItemExplain: "\uB179\uC2AC\uC5B4\uBC84\uB9B0 \uC5F4\uC1E0"

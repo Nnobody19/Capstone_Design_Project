@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33fda9ced0eadc443a5e613a60ad65ab, type: 3}
   m_Name: PaperBag
   m_EditorClassIdentifier: 
-  ItemName: PaperBag
+  ItemName: Paper_Bag
   ItemIcon: {fileID: 21300000, guid: 1352f3a3459b24c4ebefefa0d64db287, type: 3}
   IsImportant: 0
+  itemType: 0
+  ItemExplain: "\uC885\uC774 \uBD09\uD22C"

@@ -13,6 +13,9 @@ public class Item : ScriptableObject
     public bool IsImportant;
     public ItemType itemType;
 
+    [TextArea(3, 5)]
+    public string ItemExplain;
+
     public virtual void Use()
     {
 
