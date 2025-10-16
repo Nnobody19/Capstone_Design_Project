@@ -24,14 +24,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1030975257}
-  m_LocalRotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}
-  m_LocalPosition: {x: 0.000000, y: 0.000000, z: 0.000000}
-  m_LocalScale: {x: 1.000000, y: 1.000000, z: 1.000000}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1030975261}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &1030975259
 MeshCollider:
@@ -41,12 +41,20 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1030975257}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
-    m_Enabled: 1
-    serializedVersion: 3
-    m_Convex: 0
-    m_CookingOptions: 14
-    m_Mesh : {fileID: 4300004, guid : abc00000000005059623201571124123, type : 3}
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: abc00000000005059623201571124123, type: 3}
 --- !u!1 &1030975260
 GameObject:
   m_ObjectHideFlags: 0
@@ -72,13 +80,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1030975260}
-  m_LocalRotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}
-  m_LocalPosition: {x: 0.000000, y: 0.000000, z: 0.000000}
-  m_LocalScale: {x: 1.000000, y: 1.000000, z: 1.000000}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1030975258}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1030975262
 MeshRenderer:
@@ -91,6 +99,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -99,12 +108,12 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: abc00000000009832509364523563166, type: 2}
-  - {fileID: 2100000, guid: abc00000000006458127371388917952, type: 2}
-  - {fileID: 2100000, guid: abc00000000000921446847468016157, type: 2}
-  - {fileID: 2100000, guid: abc00000000008516495311533106674, type: 2}
-  - {fileID: 2100000, guid: abc00000000007139077199112934076, type: 2}
-  - {fileID: 2100000, guid: abc00000000011711727293664294515, type: 2}
+  - {fileID: 2100000, guid: 040e9adc1c7193c4e90944ae44c8c89c, type: 2}
+  - {fileID: 2100000, guid: 852ca011b0f83e54792f763eea732953, type: 2}
+  - {fileID: 2100000, guid: 68d95b7a268962b44abe5a4552c916e4, type: 2}
+  - {fileID: 2100000, guid: b1572511a5e97504d827156947d38795, type: 2}
+  - {fileID: 2100000, guid: 18a1a95d3a9604d44a4916011aaaa38a, type: 2}
+  - {fileID: 2100000, guid: bd084c24092b170469cadb439330a648, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
