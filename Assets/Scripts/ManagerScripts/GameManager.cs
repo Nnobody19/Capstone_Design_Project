@@ -10,8 +10,18 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _menuUI;
     [SerializeField] private GameObject _inventoryUI;
     [SerializeField] private ToolTipManager _toolTipManager;
+    private bool _isPause = false;
+    private bool _isInventoryOpen = false;
 
-    private bool isPause = false;
+    private Coroutine _soundCoroutine;
+    private AudioSource _audioSource;
+    public AudioClip InventorySoundClip;
+    public float InventorySoundPitch = 1.2f;
+
+    public float OpenSoundStartTime = 0f;
+    public float OpenSoundEndTime = 0.9f;
+    public float CloseSoundStartTime = 1.4f;
+    public float CloseSoundEndTime = 2.2f;
 
     public static bool IsPlayerStop = false;                // 플레이어 행동 제어
 
@@ -25,6 +35,8 @@ public class GameManager : MonoBehaviour
         }
 
         Instance = this;
+
+        _audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -32,17 +44,17 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (_inventoryUI.activeSelf) ToggleInventory();
+            if (_isInventoryOpen) ToggleInventory();
 
             else
             {
-                if (isPause) CloseMenu();
+                if (_isPause) CloseMenu();
 
                 else OpenMenu();
             }
         }
 
-        if (!isPause && (Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.I))) 
+        if (!_isPause && (Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.I))) 
         {
             ToggleInventory();
         }
@@ -52,7 +64,7 @@ public class GameManager : MonoBehaviour
     {
         _menuUI.SetActive(true);
         Time.timeScale = 0f;        // 정지
-        isPause = true;
+        _isPause = true;
         Cursor.lockState = CursorLockMode.None;     // 정지해도 마우스 커서 고정 해제
         Cursor.visible = true;                      // 조작은 해야 하니 마우스 커서는 보이게
     }
@@ -61,30 +73,49 @@ public class GameManager : MonoBehaviour
     {
         _menuUI.SetActive(false);
         Time.timeScale = 1f;        // 정지 해제
-        isPause = false;
+        _isPause = false;
         Cursor.lockState = CursorLockMode.Locked;   // 게임 시작 시, 마우스 커서 숨기기
         Cursor.visible= false;
     }
 
     public void ToggleInventory()
     {
-        bool isActive = !_inventoryUI.activeSelf;
-        _inventoryUI.SetActive(isActive);
-        IsPlayerStop = isActive;
+        if (_soundCoroutine != null) StopCoroutine(_soundCoroutine);
+        _audioSource.Stop();
 
-        if (isActive)
+        _isInventoryOpen = !_isInventoryOpen;
+
+        _inventoryUI.SetActive(_isInventoryOpen);
+        IsPlayerStop = _isInventoryOpen;
+        _audioSource.pitch = InventorySoundPitch;
+
+        if (_isInventoryOpen)
         {
+            _soundCoroutine = StartCoroutine(PlaySoundSegment(InventorySoundClip, OpenSoundStartTime, OpenSoundEndTime));
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
 
         else
         {
+            _soundCoroutine = StartCoroutine(PlaySoundSegment(InventorySoundClip, CloseSoundStartTime, CloseSoundEndTime));
+
             if (_toolTipManager != null) _toolTipManager.HideToolTip();
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
+    }
+    
+    private IEnumerator PlaySoundSegment(AudioClip clip, float startTime, float endTime)
+    {
+        _audioSource.clip = clip;
+        _audioSource.time = startTime;
+        _audioSource.Play();
+
+        yield return new WaitForSeconds(endTime - startTime);
+
+        _audioSource.Stop();
     }
 
     public void Quit()
