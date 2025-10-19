@@ -2,10 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+
+    public static int LoopCount = 0;
+    public static int CurrentChapter = 1;
+    public static bool IsPlayerStop = false;                // 플레이어 행동 제어
+    public static bool IsAnomaly = false;
 
     [SerializeField] private GameObject _menuUI;
     [SerializeField] private GameObject _inventoryUI;
@@ -22,8 +28,6 @@ public class GameManager : MonoBehaviour
     public float OpenSoundEndTime = 0.9f;
     public float CloseSoundStartTime = 1.4f;
     public float CloseSoundEndTime = 2.2f;
-
-    public static bool IsPlayerStop = false;                // 플레이어 행동 제어
 
     // Start is called before the first frame update
     void Awake()
@@ -105,6 +109,30 @@ public class GameManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
+    }
+
+    public void ResetAllObjects()
+    {
+        IResetable[] resetableObjects = FindObjectsOfType<MonoBehaviour>().OfType<IResetable>().ToArray();
+
+        foreach (IResetable obj in resetableObjects)
+        {
+            obj.ResetState();
+        }
+
+        Debug.Log(resetableObjects.Length + "개의 오브젝트 초기화");
+    }
+
+    public void CompleteLoop()
+    {
+        LoopCount++;
+        Debug.Log("누적 루프 횟수 : " + LoopCount);
+    }
+
+    public void NextChapeter()
+    {
+        CurrentChapter++;
+        Debug.Log("스토리 진행 후 현재 챕터 : " + CurrentChapter);
     }
     
     private IEnumerator PlaySoundSegment(AudioClip clip, float startTime, float endTime)

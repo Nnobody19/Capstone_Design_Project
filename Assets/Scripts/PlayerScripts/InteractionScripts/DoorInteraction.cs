@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DoorInteraction : MonoBehaviour
+public class DoorInteraction : MonoBehaviour, IResetable
 {
     private Vector3 _doorClosePosition;
     private bool _isDoorOpen = false;
@@ -28,11 +28,26 @@ public class DoorInteraction : MonoBehaviour
         }
     }
 
+    public bool IsOpen()
+    {
+        if (_isDoorOpen) return true;
+        else return false;
+    }
+
     public void ToggleDoor()
     {
         if (_isDoorMove) return;
 
         StartCoroutine(SlideDoor());
+    }
+
+    public void ResetState()
+    {
+        StopAllCoroutines();
+        _audioSource.Stop();
+        transform.position = _doorClosePosition;
+        _isDoorOpen = false;
+        _isDoorMove = false;
     }
 
     private IEnumerator SlideDoor()
