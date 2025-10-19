@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerViewInteraction : MonoBehaviour
 {
@@ -59,41 +60,88 @@ public class PlayerViewInteraction : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, InteractionDistance, InteractionLayerMask))
         {
-            ItemPickup itemPickup = hit.collider.GetComponent<ItemPickup>();
-
-            if (itemPickup != null)
-            {
-                if (Input.GetKeyDown(KeyCode.F))
+            if (Input.GetKeyDown(KeyCode.F)) 
+            { 
+                ItemPickup itemPickup = hit.collider.GetComponent<ItemPickup>();
+                if (itemPickup != null)
                 {
                     if (InventoryManager.Instance.Add(itemPickup.item)) Destroy(hit.collider.gameObject);
+                    return;
                 }
-            }
 
-            else if (hit.collider.tag == "Interaction")
-            {
-                if (Input.GetKeyDown(KeyCode.F))
+                DoorInteraction door = hit.collider.GetComponent<DoorInteraction>();
+                if (door != null) 
+                { 
+                    door.ToggleDoor();
+                    return;
+                }
+
+                if (hit.collider.tag == "Interaction")
                 {
                     string objectName = hit.collider.name;
-                    if (objectName.Contains("Exit"))
-                    {
-                        _audioSource.PlayOneShot(AudioClips[2]);
-                        StartCoroutine(TeleportPlayer());
-                    }
 
-                    else if (objectName.Contains("ClassroomDoor"))
-                    {
-                        DoorInteraction door = hit.collider.GetComponent<DoorInteraction>();
-                        if (door != null)
-                        {
-                            door.ToggleDoor();
-                            return;
-                        }
-                    }
+                    if (objectName.Contains("LeftExit") || objectName.Contains("Stairs")) CheckChoice(objectName);
                 }
-
-
             }
         }
+    }
+
+    private void CheckChoice(string objName)
+    {
+        if (!GameManager.IsAnomaly)
+        {
+            if (objName.Contains("LeftExit"))
+            {
+                bool hasRequiredItems = InventoryManager.Instance.HasAllRequiredItemsForCurrentChapter();
+
+                if (hasRequiredItems) TriggerStoryEvent();
+
+                else
+                {
+                    _audioSource.pitch = 1.2f;
+                    _audioSource.PlayOneShot(AudioClips[2]);
+                    StartCoroutine(TeleportPlayer());
+                }
+            }
+
+            else if (objName.Contains("Stairs"))
+            {
+                _audioSource.pitch = 1.45f;
+                _audioSource.PlayOneShot(AudioClips[3]);
+                DecreaseSansity();
+                StartCoroutine(TeleportPlayer());
+            }
+        }
+
+        else
+        {
+            if (objName.Contains("Stairs"))
+            {
+                _audioSource.pitch = 1.45f;
+                _audioSource.PlayOneShot(AudioClips[3]);
+                StartCoroutine(TeleportPlayer());
+            }
+
+            else if (objName.Contains("LeftExit"))
+            {
+                DecreaseSansity();
+                StartCoroutine(HorrorEventAndTeleport());
+            }
+        }
+    }
+
+    private void TriggerStoryEvent()
+    {
+        Debug.Log("필수 아이템 전부 입수 -> " + GameManager.CurrentChapter + "챕터 스토리 시작");
+
+        GameManager.Instance.NextChapeter();
+
+        StartCoroutine(TeleportPlayer());
+    }
+
+    private void DecreaseSansity()
+    {
+        Debug.Log("정신력 감소");
     }
 
     private IEnumerator TeleportPlayer()
@@ -114,8 +162,40 @@ public class PlayerViewInteraction : MonoBehaviour
         PlayerTransform.position = SpawnTransform.position;
         cc.enabled = true;
 
+        GameManager.Instance.CompleteLoop();
+        GameManager.Instance.ResetAllObjects();
+
         timer = 0f;
         while (timer < FadeDuration) {
+            FadeImage.color = new Color(0, 0, 0, 1 - (timer / FadeDuration));
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        FadeImage.color = new Color(0, 0, 0, 0);
+
+        GameManager.IsPlayerStop = false;
+    }
+
+    private IEnumerator HorrorEventAndTeleport()
+    {
+        GameManager.IsPlayerStop = true;
+
+        FadeImage.color = Color.red;
+        yield return new WaitForSeconds(0.1f);
+        FadeImage.color = Color.black;
+        yield return new WaitForSeconds(0.5f);
+
+        CharacterController cc = PlayerTransform.GetComponent<CharacterController>();
+        cc.enabled = false;
+        PlayerTransform.position = SpawnTransform.position;
+        cc.enabled = true;
+
+        GameManager.Instance.CompleteLoop();
+        GameManager.Instance.ResetAllObjects();
+
+        float timer = 0f;
+        while (timer < FadeDuration)
+        {
             FadeImage.color = new Color(0, 0, 0, 1 - (timer / FadeDuration));
             timer += Time.deltaTime;
             yield return null;

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class InventoryManager : MonoBehaviour
 
     public List<Item> Items = new List<Item>();
     public int InventorySize = 12;
+
+    public List<RequiredItems> ChapterRequirements;
 
     void Awake()
     {
@@ -34,5 +37,25 @@ public class InventoryManager : MonoBehaviour
     private void Remove(Item item)
     {
         Items.Remove(item);
+    }
+
+    public bool HasAllRequiredItemsForCurrentChapter()
+    {
+        RequiredItems requirements = ChapterRequirements.FirstOrDefault(req => req.ChapterNumber == GameManager.CurrentChapter);
+
+        if (requirements == null || requirements.RequireItems.Count == 0) 
+        {
+            return true;
+        }
+
+        foreach (Item requireItem in requirements.RequireItems)
+        {
+            if (!Items.Contains(requireItem))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,8 +7,11 @@ public class HeadBob : MonoBehaviour
 {
     [SerializeField] private CharacterController _playerController;
 
+    public static event Action OnStep;
+
     private Vector3 _startPos;
     private float timer = 0f;
+    private float _previousStep = 0f;
 
     public float WalkHeadBobSpeed = 7f;
     public float WalkHeadBobIntensity = 0.1f;
@@ -48,7 +52,16 @@ public class HeadBob : MonoBehaviour
 
             timer += Time.unscaledDeltaTime * headBobSpeed;
 
-            float yPos = _startPos.y + Mathf.Sin(timer) * headBobIntensity;
+            float currentStep = Mathf.Sin(timer);
+
+            if (_previousStep > 0 && currentStep <= 0)
+            {
+                OnStep?.Invoke();
+            }
+
+            _previousStep = currentStep;
+
+            float yPos = _startPos.y + currentStep * headBobIntensity;
             float xPos = _startPos.x + Mathf.Cos(timer / 2) * headBobIntensity / 2;
 
             transform.localPosition = new Vector3(xPos, yPos, _startPos.z);

@@ -9,8 +9,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 _playerVelocity;
     private AudioSource _audioSource;
 
-    public float WalkRate = 0.8f;
-    public float RunRate = 1.5f;
+    public float WalkPitch = 1.2f;
+    public float RunPitch = 1.92f;
 
     public float gravity = -10f;
     public float MoveSpeed = 5.0f;
@@ -65,8 +65,8 @@ public class PlayerController : MonoBehaviour
         {
             if (!_audioSource.isPlaying) _audioSource.Play();
 
-            bool isRun = _playerController.velocity.magnitude > (MoveSpeed + 0.1f);
-            _audioSource.pitch = isRun ? RunRate : WalkRate;
+            bool isRun = Input.GetKey(KeyCode.LeftShift);
+            _audioSource.pitch = isRun ? RunPitch : WalkPitch;
         }
 
         else _audioSource.Stop();
