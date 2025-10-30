@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
 
         Vector3 moveDirection = transform.forward * verticalMove + transform.right * horizontalMove;
 
-        if (moveDirection.magnitude > 1) moveDirection.Normalize();         // 가속하지 않게 정규화
+        if (moveDirection.magnitude > 1) moveDirection.Normalize();         
 
         Vector3 move = moveDirection * currentSpeed;
 
